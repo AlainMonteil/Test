@@ -1,0 +1,216 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>TEI customisation for controling software annotations</title>
+        <author>Laurent Romary</author>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>Inria</publisher>
+        <availability>
+          <licence target="https://creativecommons.org/licenses/by/4.0/">
+            <p>In conformance with Inria's open science policy, the Creative Commons Attribution 4.0 International (CC
+              BY 4.0) Licence applies to this document.</p>
+          </licence>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Written from scratch.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+
+      <schemaSpec ident="tei_minimal" start="TEI teiCorpus tei" prefix="tei_" targetLang="en" docLang="en">
+        <moduleRef key="header" include="teiHeader fileDesc titleStmt publicationStmt sourceDesc 
+          notesStmt encodingDesc profileDesc textClass catRef idno availability licence classDecl taxonomy
+          category catDesc appInfo application"/>
+        <moduleRef key="core" include="p title teiCorpus respStmt ref rs bibl resp name note publisher date desc"/>
+        <moduleRef key="textstructure" include="TEI text body"/>
+        <moduleRef key="tei"/>
+        <moduleRef key="linking" include=""/>
+        <elementSpec ident="body" mode="change">
+          <content>
+            <sequence>
+              <classRef key="model.global" minOccurs="0" maxOccurs="unbounded"/>
+              <sequence minOccurs="0">
+                <classRef key="model.divTop"/>
+                <alternate minOccurs="0" maxOccurs="unbounded">
+                  <classRef key="model.global"/>
+                  <classRef key="model.divTop"/>
+                </alternate>
+              </sequence>
+
+              <sequence minOccurs="0">
+                <classRef key="model.divGenLike"/>
+                <alternate minOccurs="0" maxOccurs="unbounded">
+                  <classRef key="model.global"/>
+                  <classRef key="model.divGenLike"/>
+                </alternate>
+              </sequence>
+              <alternate minOccurs="0">
+                <sequence minOccurs="1" maxOccurs="unbounded">
+                  <classRef key="model.divLike"/>
+                  <alternate minOccurs="0" maxOccurs="unbounded">
+                    <classRef key="model.global"/>
+                    <classRef key="model.divGenLike"/>
+                  </alternate>
+                </sequence>
+                <sequence minOccurs="1" maxOccurs="unbounded">
+                  <classRef key="model.div1Like"/>
+                  <alternate minOccurs="0" maxOccurs="unbounded">
+                    <classRef key="model.global"/>
+                    <classRef key="model.divGenLike"/>
+                  </alternate>
+                </sequence>
+                <sequence>
+                  <sequence minOccurs="1" maxOccurs="unbounded">
+                    <alternate minOccurs="1" maxOccurs="1">
+                      <elementRef key="schemaSpec"/>
+                      <classRef key="model.common"/>
+                    </alternate>
+                    <classRef key="model.global" minOccurs="0" maxOccurs="unbounded"/>
+                  </sequence>
+                  <alternate minOccurs="0">
+                    <sequence minOccurs="1" maxOccurs="unbounded">
+                      <classRef key="model.divLike"/>
+                      <alternate minOccurs="0" maxOccurs="unbounded">
+                        <classRef key="model.global"/>
+                        <classRef key="model.divGenLike"/>
+                      </alternate>
+                    </sequence>
+                    <sequence minOccurs="1" maxOccurs="unbounded">
+                      <classRef key="model.div1Like"/>
+                      <alternate minOccurs="0" maxOccurs="unbounded">
+                        <classRef key="model.global"/>
+                        <classRef key="model.divGenLike"/>
+                      </alternate>
+                    </sequence>
+                  </alternate>
+                </sequence>
+              </alternate>
+              <sequence minOccurs="0" maxOccurs="unbounded">
+                <classRef key="model.divBottom"/>
+                <classRef key="model.global" minOccurs="0" maxOccurs="unbounded"/>
+              </sequence>
+            </sequence>
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="encodingDesc" mode="change">
+          <content>
+            <alternate minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.encodingDescPart"/>
+              <classRef key="model.pLike"/>
+            </alternate>
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="fileDesc" mode="change">
+          <content>
+            <sequence>
+              <sequence>
+                <!-- minOccurs => 0 -->
+                <elementRef key="titleStmt" minOccurs="0"/>
+                <elementRef key="editionStmt" minOccurs="0"/>
+                <elementRef key="extent" minOccurs="0"/>
+                <elementRef key="publicationStmt" minOccurs="0"/>
+                <elementRef key="seriesStmt" minOccurs="0" maxOccurs="unbounded"/>
+                <elementRef key="notesStmt" minOccurs="0"/>
+              </sequence>
+              <!-- minOccurs => 0 -->
+              <elementRef key="sourceDesc" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="tei" mode="add">
+          <content>
+            <sequence>
+              <elementRef key="teiHeader"/>
+              <elementRef key="text"/>
+            </sequence>
+          </content>
+        </elementSpec>
+
+<elementSpec ident="text" mode="change">
+  <content>
+    <sequence>
+      <classRef key="model.global"
+        minOccurs="0" maxOccurs="unbounded"/>
+      <sequence minOccurs="0">
+        <elementRef key="front"/>
+        <classRef key="model.global"
+          minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+      <!-- changed to unbounded -->
+      <alternate maxOccurs="unbounded">
+        <elementRef key="body"/>
+        <elementRef key="group"/>
+        <!-- added -->
+        <elementRef key="p"/>
+      </alternate>
+      <classRef key="model.global"
+        minOccurs="0" maxOccurs="unbounded"/>
+      <sequence minOccurs="0">
+        <elementRef key="back"/>
+        <classRef key="model.global"
+          minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </sequence>
+  </content>
+</elementSpec>
+        
+        <elementSpec ident="application" mode="change">
+          <content>
+            <sequence>
+              <!-- changed to 0 -->
+              <classRef key="model.labelLike"
+                minOccurs="0" maxOccurs="unbounded"/>
+              <alternate>
+                <classRef key="model.ptrLike"
+                  minOccurs="0" maxOccurs="unbounded"/>
+                <classRef key="model.pLike"
+                  minOccurs="0" maxOccurs="unbounded"/>
+              </alternate>
+            </sequence>
+          </content>
+          <attList>
+            <attDef ident="when" mode="change">
+              <datatype>
+                <dataRef key="teidata.text"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="rs" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <valList type="closed" mode="change">
+                <valItem ident="software"/>
+                <valItem ident="version"/>
+                <valItem ident="creator"/>
+                <valItem ident="url"/>
+                <valItem ident="name"/>
+                <valItem ident="curator"/>
+                <valItem ident="language"/>
+                <valItem ident="publisher"/>
+                <valItem ident="bibr"/>
+                <valItem ident="SWHID"/>
+              </valList>
+            </attDef>
+            <attDef ident="subtype" mode="change">
+              <valList type="closed" mode="change">
+                <valItem ident="component"/>
+                <valItem ident="environment"/>
+                <valItem ident="implicit"/>
+                <valItem ident="person"></valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
